@@ -113,7 +113,7 @@ async function ensureRates(forceRefresh = false, preferredCurrency = null) {
 
 async function getEffectiveState() {
   const settings = await shared.getSettings();
-  const cache = settings.rateSource === "auto"
+  const cache = settings.enabled && settings.rateSource === "auto"
     ? await ensureRates(false, settings.selectedCurrency)
     : await shared.getRateCache();
 
@@ -202,7 +202,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "settingsUpdated") {
       const settings = await shared.getSettings();
-      if (settings.rateSource === "auto") {
+      if (settings.enabled && settings.rateSource === "auto") {
         await ensureRates(false, settings.selectedCurrency);
       }
 

@@ -109,7 +109,10 @@ async function main() {
     await popupPage.goto(`chrome-extension://${extensionId}/popup.html`);
     await popupPage.waitForSelector("#currency");
     await popupPage.waitForSelector("#rate-source");
-    await popupPage.close();
+    await popupPage.waitForSelector("#enabled-toggle");
+    await popupPage.screenshot({
+      path: path.join(OUTPUT_DIR, "popup-demo.png")
+    });
 
     const page = await context.newPage();
     await page.goto("https://cars.av.by/smoke-test", {
@@ -128,7 +131,27 @@ async function main() {
     assert.match(staticBadgeText || "", /^USD /);
     assert.match(dynamicBadgeText || "", /^USD /);
 
-    console.log("Playwright smoke test passed");
+    await popupPage.getByRole("button", { name: /отключ/i }).click();
+    await page.waitForFunction(() => {
+      return document.querySelectorAll(".av-ext-converted-price").length === 0;
+    }, null, { timeout: 15000 });
+
+    await page.evaluate(() => {
+      const extraPrice = document.createElement("div");
+      extraPrice.className = "price";
+      extraPrice.textContent = "61 000 р.";
+      document.body.appendChild(extraPrice);
+    });
+    await page.waitForTimeout(600);
+    assert.equal(await badges.count(), 0);
+
+    await page.screenshot({
+      path: path.join(OUTPUT_DIR, "synthetic-demo.png"),
+      fullPage: true
+    });
+    await popupPage.close();
+
+    console.log(`Playwright smoke test passed: ${staticBadgeText} | ${dynamicBadgeText}`);
   } catch (error) {
     if (context) {
       const pages = context.pages();

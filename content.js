@@ -122,6 +122,12 @@
     }
   }
 
+  function removeAllInjectedBadges() {
+    document.querySelectorAll(`.${BADGE_CLASS}`).forEach((badge) => {
+      badge.remove();
+    });
+  }
+
   function getBynAmount(node) {
     const sourceText = node.innerText || node.textContent || "";
     const extractedAmount = shared.extractBynPriceFromText(sourceText);
@@ -183,6 +189,11 @@
   }
 
   function renderRoot(root) {
+    if (!extensionState.settings.enabled) {
+      removeAllInjectedBadges();
+      return;
+    }
+
     collectCandidateNodes(root).forEach(renderNode);
   }
 
@@ -192,6 +203,12 @@
     }
 
     ensureStyles();
+
+    if (!extensionState.settings.enabled) {
+      removeAllInjectedBadges();
+      return;
+    }
+
     renderRoot(root);
   }
 
@@ -199,6 +216,11 @@
     const roots = Array.from(observerQueue);
     observerQueue.clear();
     observerTimer = null;
+
+    if (!extensionState.settings.enabled) {
+      removeAllInjectedBadges();
+      return;
+    }
 
     const selectedRate = extensionState.rates[extensionState.settings.selectedCurrency];
     if (extensionState.settings.rateSource === "auto" && !shared.hasFreshRate(selectedRate)) {
@@ -213,6 +235,10 @@
   }
 
   function scheduleRootRender(root) {
+    if (!extensionState.settings.enabled) {
+      return;
+    }
+
     const elementRoot = root && root.nodeType === Node.TEXT_NODE
       ? root.parentElement
       : root;

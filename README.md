@@ -12,6 +12,7 @@ Chrome-first `Manifest V3` extension that adds converted `USD`, `EUR`, or `RUB` 
 ## Features
 
 - popup for currency and rate source selection
+- global popup toggle to disable or re-enable conversion
 - automatic rates from `NBRB`
 - manual override for the selected currency
 - cached rates in `chrome.storage.local`

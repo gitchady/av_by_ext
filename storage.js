@@ -6,6 +6,7 @@
   };
   const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
   const DEFAULT_SETTINGS = {
+    enabled: true,
     selectedCurrency: "USD",
     rateSource: "auto",
     manualRates: {
@@ -35,6 +36,7 @@
 
   function cloneDefaultSettings() {
     return {
+      enabled: DEFAULT_SETTINGS.enabled,
       selectedCurrency: DEFAULT_SETTINGS.selectedCurrency,
       rateSource: DEFAULT_SETTINGS.rateSource,
       manualRates: { ...DEFAULT_SETTINGS.manualRates }
@@ -55,6 +57,7 @@
   function sanitizeSettings(rawSettings) {
     const defaults = cloneDefaultSettings();
     const candidate = rawSettings && typeof rawSettings === "object" ? rawSettings : {};
+    const enabled = candidate.enabled !== false;
     const selectedCurrency = isValidCurrency(candidate.selectedCurrency)
       ? candidate.selectedCurrency
       : defaults.selectedCurrency;
@@ -66,6 +69,7 @@
     }
 
     return {
+      enabled,
       selectedCurrency,
       rateSource,
       manualRates

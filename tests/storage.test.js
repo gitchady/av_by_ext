@@ -8,6 +8,29 @@ test("normalizePriceText extracts numeric BYN value", () => {
   assert.equal(shared.normalizePriceText("3\u00a0755,60 BYN"), 3755.6);
 });
 
+test("sanitizeSettings defaults enabled to true and preserves explicit false", () => {
+  assert.deepEqual(shared.sanitizeSettings({}), {
+    enabled: true,
+    selectedCurrency: "USD",
+    rateSource: "auto",
+    manualRates: {
+      USD: "",
+      EUR: "",
+      RUB: ""
+    }
+  });
+
+  assert.equal(
+    shared.sanitizeSettings({
+      enabled: false,
+      selectedCurrency: "EUR",
+      rateSource: "manual",
+      manualRates: { EUR: "3.1" }
+    }).enabled,
+    false
+  );
+});
+
 test("convertBynToCurrency respects NBRB scale", () => {
   const amount = shared.convertBynToCurrency(1000, 3.7556, 100);
   assert.equal(amount.toFixed(2), "26626.90");

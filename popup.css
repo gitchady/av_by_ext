@@ -25,6 +25,28 @@ body {
   font-size: 13px;
 }
 
+.toggle-button {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.toggle-button--enabled {
+  background: #e7f6ea;
+  color: #1f6a31;
+}
+
+.toggle-button--disabled {
+  background: #fbe7e7;
+  color: #8b2222;
+}
+
 .field {
   display: block;
   margin-bottom: 12px;
