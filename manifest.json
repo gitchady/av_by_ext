@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "AV.by Currency Converter",
+  "description": "Shows AV.by prices converted from BYN into USD, EUR, or RUB.",
+  "version": "0.1.0",
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://*.av.by/*",
+    "https://api.nbrb.by/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "AV.by Currency Converter",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.av.by/*"
+      ],
+      "js": [
+        "storage.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}

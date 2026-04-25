@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AV.by Currency Converter</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <h1 class="popup__title">AV.by Converter</h1>
+      <p class="popup__hint">Конвертация цен BYN в USD, EUR или RUB.</p>
+
+      <label class="field">
+        <span class="field__label">Валюта</span>
+        <select id="currency" class="field__control">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="RUB">RUB</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="field__label">Источник курса</span>
+        <select id="rate-source" class="field__control">
+          <option value="auto">НБРБ</option>
+          <option value="manual">Вручную</option>
+        </select>
+      </label>
+
+      <label class="field" id="manual-rate-row">
+        <span class="field__label">Ручной курс</span>
+        <input id="manual-rate" class="field__control" type="number" min="0" step="0.0001" placeholder="Например 3.2">
+      </label>
+
+      <p class="popup__status" id="status" aria-live="polite"></p>
+    </main>
+
+    <script src="storage.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
